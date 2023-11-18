@@ -1,0 +1,12 @@
+python-decouple
+requests
+fastapi
+uvicorn
+openai
+gunicorn
+langchain
+PyPDF2
+dedent
+supabase
+python-dotenv
+psycopg2-binary
