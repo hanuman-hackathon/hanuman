@@ -15,7 +15,7 @@ export default function ClassesPage() {
     }
 
     void getAndSetClasses();
-  }, []);
+  }, [getClasses]);
 
   return (
     <div className="min-h-screen bg-off-white px-page-x py-page-y">

@@ -3,24 +3,24 @@ import axios from "axios";
 
 import { Class } from "../types";
 
-const mockClasses: Class[] = [
-  {
-    class_id: "12345678",
-    created_at: new Date(),
-    name: "Class 1",
-    description: "",
-    files: [
-      "File 1",
-      "File 2",
-      "File 2",
-      "File 2",
-      "File 2",
-      "File 2",
-      "File 2",
-      "File 2",
-    ],
-  },
-];
+// const mockClasses: Class[] = [
+//   {
+//     class_id: "12345678",
+//     created_at: new Date(),
+//     name: "Class 1",
+//     description: "",
+//     files: [
+//       "File 1",
+//       "File 2",
+//       "File 2",
+//       "File 2",
+//       "File 2",
+//       "File 2",
+//       "File 2",
+//       "File 2",
+//     ],
+//   },
+// ];
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL ?? "http://localhost:8000";
 
@@ -32,8 +32,13 @@ export default function useClass() {
   }, []);
 
   async function getClasses(): Promise<Class[]> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return mockClasses;
+    try {
+      const response = await axios.get<Class[]>(SERVER_URL + "/classes");
+      return response.data;
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
   }
 
   async function getClass(classId: string): Promise<Class | undefined> {
@@ -49,12 +54,9 @@ export default function useClass() {
   }
 
   async function uploadFiles(classId: string, files: FileList) {
-    console.log("uploading files");
-    console.log(files);
-
     try {
       const formData = new FormData();
-      formData.append("class_id", 2);
+      formData.append("class_id", classId);
       for (let i = 0; i < files.length; i++) {
         formData.append("files", files[i]);
       }
@@ -64,11 +66,8 @@ export default function useClass() {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      console.log("uploaded files");
     } catch (e) {
-      console.log("error uploading");
-      console.log(e);
+      // TODO: handle
     }
   }
 

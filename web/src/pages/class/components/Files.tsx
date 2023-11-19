@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import useClass from "../hooks/useClass";
 
 interface FilesProps {
@@ -6,6 +7,8 @@ interface FilesProps {
 
 export default function Files({ files }: FilesProps) {
   const { uploadFiles } = useClass();
+
+  const fileUploadRef = useRef<HTMLInputElement | null>(null);
 
   async function submitFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     console.log("uploading files");
@@ -24,13 +27,20 @@ export default function Files({ files }: FilesProps) {
           </div>
         ))}
       </div>
+      <button
+        className="text-left text-gray-500 "
+        onClick={() => fileUploadRef.current?.click()}
+      >
+        Add a file
+      </button>
       <input
         id="file-upload"
         type="file"
         accept="application/pdf"
         multiple
-        className=""
+        ref={fileUploadRef}
         onChange={submitFileUpload}
+        style={{ display: "none" }}
       />
     </div>
   );

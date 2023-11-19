@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 
 import { Message } from "../types";
 import SendMessageIcon from "../assets/SendMessageIcon";
@@ -129,9 +129,16 @@ export default function Chat() {
     },
   ]);
   const [loading, setLoading] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   function sendMessage() {
-    console.log("CALLED");
     if (currMessage !== "") {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -153,7 +160,11 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col w-full max-h-full min-h-full gap-5 px-6 py-8 overflow-hidden bg-white rounded-xl shadow-standard">
-      <div className="flex flex-col h-full px-5 overflow-y-scroll">
+      <div
+        ref={chatContainerRef}
+        className="flex flex-col h-full gap-3 px-5 overflow-y-scroll"
+        style={{ scrollBehavior: "smooth" }}
+      >
         {messages.map((message) => {
           return message.role === "assistant"
             ? AIMessage(message.content)
@@ -168,7 +179,7 @@ export default function Chat() {
       <div className="gap-5 px-5 min-h-10">
         <div className="flex justify-between h-10">
           <input
-            className="w-[95%] h-full border rounded-md"
+            className="w-[95%] h-full border rounded-md px-2"
             placeholder="Send a message"
             value={currMessage}
             onChange={(e) => setCurrMessage(e.target.value)}
