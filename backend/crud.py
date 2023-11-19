@@ -3,7 +3,6 @@ import io
 
 from fastapi import UploadFile
 from PyPDF2 import PdfReader
-import asyncio
 
 from supabase_util import supabase, cursor, conn
 
@@ -40,7 +39,7 @@ async def create_class(name: str, description: str):
         .execute()
     )
 
-    return get_classes()
+    return await get_classes()
 
 
 async def create_files(class_id: str, files: list[UploadFile]):
@@ -48,10 +47,27 @@ async def create_files(class_id: str, files: list[UploadFile]):
         raw_file = file.file.read()
         blob = get_resume_content(raw_file)
 
-        file_data, _ = (
+        _, _ = (
             supabase.table("files")
             .insert(({"name": file.filename, "class_id": class_id, "blob": blob}))
             .execute()
         )
 
-        print(file_data)
+
+async def get_class_name(class_id: str):
+    class_data, _ = (
+        supabase.table("classes").select("name").eq("id", class_id).execute()
+    )
+
+    return class_data[1][0]["name"]
+
+
+async def get_files(class_id: str):
+    files_data, _ = (
+        supabase.table("files")
+        .select("file_id:id, name, blob")
+        .eq("class_id", class_id)
+        .execute()
+    )
+
+    return files_data[1]

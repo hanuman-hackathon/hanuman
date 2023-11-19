@@ -1,15 +1,21 @@
 from pydantic import BaseModel
-from typing import Literal
+from typing import Literal, Optional
 from fastapi import UploadFile
 import datetime
+
+
+class File(BaseModel):
+    file_id: int
+    blob: Optional[str] = ""
+    name: str
 
 
 class Class(BaseModel):
     class_id: int
     created_at: datetime.datetime
     name: str
-    description: str
-    files: list[str] = []
+    description: Optional[str]
+    files: list[object] = []
 
 
 class GetClassesResponse(BaseModel):
@@ -18,7 +24,7 @@ class GetClassesResponse(BaseModel):
 
 
 class Message(BaseModel):
-    role: Literal["assistant", "user"]
+    role: Literal["system", "assistant", "user"]
     content: str
 
 
@@ -34,7 +40,7 @@ class ChatResponse(BaseModel):
 
 class CreateClassPayload(BaseModel):
     name: str
-    description: str
+    description: Optional[str] = ""
 
 
 class CreateClassResponse(BaseModel):

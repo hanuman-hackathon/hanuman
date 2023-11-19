@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from crud import get_classes, create_class, create_files
+from crud import get_classes, create_class, create_files, get_files, get_class_name
 from chat import chat
 
 from schemas import (
@@ -67,7 +67,9 @@ async def upload_files_handler(payload: UploadFilesPayload):
 @app.post("/chat", response_model=ChatResponse)
 async def chat_handler(payload: ChatPayload):
     try:
-        message = await chat(payload.message)
+        class_name = await get_class_name(payload.class_id)
+        files = await get_files(payload.class_id)
+        message = await chat(class_name, files, payload.messages)
 
         return {"message": {"role": "assistant", "content": message}}
 
