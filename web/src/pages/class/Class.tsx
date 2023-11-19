@@ -37,11 +37,14 @@ export default function ClassPage() {
 
   return (
     <div className="flex flex-col max-h-screen min-h-screen bg-off-white px-page-x py-page-y">
-      <Link to={`/classes`}>
-        <h1 className="mb-10 text-2xl font-bold">{currentClass.name}</h1>
-      </Link>
-      <div className="flex flex-1 min-h-full max-h-full gap-[100px]">
-        <Files classId={currentClass.class_id} files={currentClass.files} />
+      <div className="flex flex-1 min-h-full max-h-full gap-[50px]">
+        <div>
+          <Link to={`/classes`}>
+            <h1 className="mb-10 text-2xl font-bold">{currentClass.name}</h1>
+          </Link>
+
+          <Files classId={currentClass.class_id} files={currentClass.files} />
+        </div>
         <Chat classId={currentClass.class_id} />
       </div>
     </div>
