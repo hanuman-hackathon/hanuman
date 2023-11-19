@@ -12,6 +12,23 @@ export default function useClass() {
     getClasses().then((classes) => setClasses(classes));
   }, []);
 
+  async function addClass(name: string): Promise<ClassResponse> {
+    try {
+      const response = await axios.post<ClassResponse>(
+        SERVER_URL + "/create_class",
+        {
+          name: name,
+        }
+      );
+
+      setClasses(response.data.classes);
+      return response.data;
+    } catch (e) {
+      console.log(e);
+      return { classes: [] };
+    }
+  }
+
   async function getClasses(): Promise<Class[]> {
     try {
       const response = await axios.get<ClassResponse>(SERVER_URL + "/classes");
@@ -24,6 +41,18 @@ export default function useClass() {
   async function getClass(classId: number): Promise<Class | undefined> {
     for (const class_ of classes) {
       if (class_.class_id === classId) {
+        return class_;
+      }
+    }
+
+    return undefined;
+  }
+
+  async function getClassByName(className: string): Promise<Class | undefined> {
+    console.log(classes);
+    console.log(className);
+    for (const class_ of classes) {
+      if (class_.name === className) {
         return class_;
       }
     }
@@ -78,5 +107,13 @@ export default function useClass() {
     }
   }
 
-  return { getClasses, getClass, uploadFiles, getChatResponse };
+  return {
+    classes,
+    getClasses,
+    getClassByName,
+    addClass,
+    getClass,
+    uploadFiles,
+    getChatResponse,
+  };
 }
