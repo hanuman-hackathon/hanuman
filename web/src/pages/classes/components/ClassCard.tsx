@@ -8,6 +8,7 @@ export default function ClassCard({
   class_id,
   created_at,
   name,
+  description,
 }: ClassCardProps) {
   const date = new Date(created_at);
 
@@ -23,13 +24,14 @@ export default function ClassCard({
   const formattedDate = date.toLocaleDateString(undefined, options as any);
 
   return (
-    <div className="w-[380px] h-[200px] bg-white rounded-xl shadow-standard px-8 py-6 flex flex-col justify-between">
+    <div className="w-[380px] h-[200px] bg-white rounded-xl shadow-standard px-8 py-6 flex flex-col">
       <div className="flex items-center justify-between">
         <span className="text-off-black">{name}</span>
         <Link to={`/classes/${class_id}`}>
           <CardArrowIcon />
         </Link>
       </div>
+      <span className="mt-2 mb-auto text-sm text-gray-400 ">{description}</span>
       <div>
         <span className="text-gray-400 text-md">
           Created on {formattedDate}
