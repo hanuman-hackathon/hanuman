@@ -4,8 +4,8 @@ import psycopg2
 
 from supabase import create_client, Client
 
-url: str = config.get("SUPABASE_URL")
-key: str = config.get("SUPABASE_SERVICE_KEY")
+url: str = config("SUPABASE_URL")
+key: str = config("SUPABASE_SERVICE_KEY")
 supabase: Client = create_client(url, key)
 
 conn = psycopg2.connect(
