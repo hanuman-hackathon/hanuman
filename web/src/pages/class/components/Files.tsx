@@ -1,29 +1,46 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useClass from "../hooks/useClass";
+import { File } from "../types";
 
 interface FilesProps {
-  files: string[];
+  classId: number;
+  files: File[];
 }
 
-export default function Files({ files }: FilesProps) {
+export default function Files({ classId, files }: FilesProps) {
+  const [localFiles, setLocalFiles] = useState<File[]>(files);
+
   const { uploadFiles } = useClass();
 
   const fileUploadRef = useRef<HTMLInputElement | null>(null);
 
   async function submitFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log("uploading files");
-    console.log(event.target.files);
+    async function uploadAndSetFiles() {
+      const { success } = await uploadFiles(classId, event.target.files!);
 
-    void uploadFiles("12345678", event.target.files!);
+      if (success) {
+        const newFiles: File[] = [];
+
+        for (let i = 0; i < event.target.files!.length; i++) {
+          newFiles.push({
+            name: event.target.files![i].name,
+            file_id: "asdf",
+          });
+        }
+        setLocalFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      }
+    }
+
+    void uploadAndSetFiles();
   }
 
   return (
     <div className="min-w-[300px] flex flex-col gap-5">
       <span className="text-lg text-off-black">Uploaded Files</span>
       <div className="flex flex-col gap-3">
-        {files.map((file) => (
+        {localFiles.map((file) => (
           <div className="w-full h-[50px] bg-white shadow-standard rounded-md flex justify-between items-center px-4">
-            <span className="text-sm text-gray-600">{file}</span>
+            <span className="text-sm text-gray-600">{file.name}</span>
           </div>
         ))}
       </div>

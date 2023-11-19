@@ -1,7 +1,8 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Message } from "../types";
 import SendMessageIcon from "../assets/SendMessageIcon";
+import useClass from "../hooks/useClass";
 
 function AIMessage(text: string) {
   return (
@@ -9,7 +10,7 @@ function AIMessage(text: string) {
       key={text}
       className="flex justify-start border max-w-[60%] bg-off-white rounded-tl-md rounded-tr-md rounded-br-md"
     >
-      <p className="text-md p-[10px] max-w-[80%]">{text}</p>
+      <p className="text-md p-[10px] w-full">{text}</p>
     </div>
   );
 }
@@ -20,114 +21,20 @@ function HumanMessage(text: string) {
       key={text}
       className="flex ml-auto justify-end min-w-[20%] max-w-[60%] bg-logo-blue text-white rounded-tl-md rounded-tr-md rounded-bl-md"
     >
-      <p className="text-md p-[10px] max-w-[80%]">{text}</p>
+      <p className="text-md p-[10px] w-full">{text}</p>
     </div>
   );
 }
 
-export default function Chat() {
+interface ChatProps {
+  classId: number;
+}
+
+export default function Chat({ classId }: ChatProps) {
+  const { getChatResponse } = useClass();
+
   const [currMessage, setCurrMessage] = useState("");
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-    {
-      role: "assistant",
-      content:
-        " Hello there! Hello there! Hello there!Hello there!Hello there!Hello there!Hello there! Hello there!",
-    },
-    {
-      role: "user",
-      content: "asdf adsf asdf",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -140,6 +47,14 @@ export default function Chat() {
 
   function sendMessage() {
     if (currMessage !== "") {
+      getChatResponse(classId, [
+        ...messages,
+        { role: "user", content: currMessage },
+      ]).then((message) => {
+        setMessages((prevMessages) => [...prevMessages, message]);
+        setLoading(false);
+      });
+
       setMessages((prevMessages) => [
         ...prevMessages,
         { role: "user", content: currMessage },
@@ -148,14 +63,6 @@ export default function Chat() {
 
     setLoading(true);
     setCurrMessage("");
-
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { role: "assistant", content: "Hello there!" },
-      ]);
-      setLoading(false);
-    }, 1000);
   }
 
   return (

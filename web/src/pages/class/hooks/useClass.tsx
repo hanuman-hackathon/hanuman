@@ -1,26 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Class, ClassResponse } from "../types";
-
-// const mockClasses: Class[] = [
-//   {
-//     class_id: "12345678",
-//     created_at: new Date(),
-//     name: "Class 1",
-//     description: "",
-//     files: [
-//       "File 1",
-//       "File 2",
-//       "File 2",
-//       "File 2",
-//       "File 2",
-//       "File 2",
-//       "File 2",
-//       "File 2",
-//     ],
-//   },
-// ];
+import { Class, ClassResponse, Message, MessageResponse } from "../types";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL ?? "http://localhost:8000";
 
@@ -28,7 +9,6 @@ export default function useClass() {
   const [classes, setClasses] = useState<Class[]>([]);
 
   useEffect(() => {
-    console.log("calling");
     getClasses().then((classes) => setClasses(classes));
   }, []);
 
@@ -37,12 +17,11 @@ export default function useClass() {
       const response = await axios.get<ClassResponse>(SERVER_URL + "/classes");
       return response.data.classes;
     } catch (e) {
-      console.log("error");
       return [];
     }
   }
 
-  async function getClass(classId: string): Promise<Class | undefined> {
+  async function getClass(classId: number): Promise<Class | undefined> {
     for (const class_ of classes) {
       if (class_.class_id === classId) {
         return class_;
@@ -52,10 +31,13 @@ export default function useClass() {
     return undefined;
   }
 
-  async function uploadFiles(classId: string, files: FileList) {
+  async function uploadFiles(
+    classId: number,
+    files: FileList
+  ): Promise<{ success: boolean }> {
     try {
       const formData = new FormData();
-      formData.append("class_id", classId);
+      formData.append("class_id", classId.toString());
       for (let i = 0; i < files.length; i++) {
         formData.append("files", files[i]);
       }
@@ -65,10 +47,36 @@ export default function useClass() {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      return { success: true };
     } catch (e) {
-      // TODO: handle
+      return { success: false };
     }
   }
 
-  return { getClasses, getClass, uploadFiles };
+  async function getChatResponse(
+    classId: number,
+    messages: Message[]
+  ): Promise<Message> {
+    try {
+      const response = await axios.post<MessageResponse>(SERVER_URL + "/chat", {
+        class_id: classId,
+        messages: messages,
+      });
+
+      if (response.data.error) {
+        throw new Error(response.data.error);
+      }
+
+      return response.data.message;
+    } catch (e) {
+      return {
+        role: "assistant",
+        content:
+          "Sorry, our servers are down right now. Please try again soon.",
+      };
+    }
+  }
+
+  return { getClasses, getClass, uploadFiles, getChatResponse };
 }

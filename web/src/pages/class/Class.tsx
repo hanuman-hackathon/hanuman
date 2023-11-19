@@ -22,7 +22,8 @@ export default function ClassPage() {
         return;
       }
 
-      const class_ = await getClass(classId);
+      const class_ = await getClass(parseInt(classId));
+      console.log(class_);
       setCurrentClass(class_);
     }
 
@@ -37,8 +38,8 @@ export default function ClassPage() {
     <div className="flex flex-col max-h-screen min-h-screen bg-off-white px-page-x py-page-y">
       <h1 className="mb-10 text-2xl font-bold">{currentClass.name}</h1>
       <div className="flex flex-1 min-h-full max-h-full gap-[100px]">
-        <Files files={currentClass.files} />
-        <Chat />
+        <Files classId={currentClass.class_id} files={currentClass.files} />
+        <Chat classId={currentClass.class_id} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 export type Class = {
-  class_id: string;
+  class_id: number;
   created_at: Date;
   name: string;
   description: string;
@@ -18,4 +18,9 @@ export type File = {
 
 export type ClassResponse = {
   classes: Class[];
+};
+
+export type MessageResponse = {
+  error: string;
+  message: Message;
 };
