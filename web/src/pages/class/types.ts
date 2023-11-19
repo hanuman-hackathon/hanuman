@@ -15,3 +15,7 @@ export type File = {
   file_id: string;
   name: string;
 };
+
+export type ClassResponse = {
+  classes: Class[];
+};

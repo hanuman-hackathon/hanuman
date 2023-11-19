@@ -19,7 +19,7 @@ export default function ClassCard({
       </div>
       <div>
         <span className="text-gray-400 text-md">
-          Created on {created_at.toISOString()}
+          Created on {new Date(created_at).toISOString()}
         </span>
       </div>
     </div>

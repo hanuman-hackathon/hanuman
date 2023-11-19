@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Class } from "../types";
+import { Class, ClassResponse } from "../types";
 
 // const mockClasses: Class[] = [
 //   {
@@ -28,22 +28,21 @@ export default function useClass() {
   const [classes, setClasses] = useState<Class[]>([]);
 
   useEffect(() => {
+    console.log("calling");
     getClasses().then((classes) => setClasses(classes));
   }, []);
 
   async function getClasses(): Promise<Class[]> {
     try {
-      const response = await axios.get<Class[]>(SERVER_URL + "/classes");
-      return response.data;
+      const response = await axios.get<ClassResponse>(SERVER_URL + "/classes");
+      return response.data.classes;
     } catch (e) {
-      console.log(e);
+      console.log("error");
       return [];
     }
   }
 
   async function getClass(classId: string): Promise<Class | undefined> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
     for (const class_ of classes) {
       if (class_.class_id === classId) {
         return class_;
