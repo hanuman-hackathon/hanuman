@@ -48,7 +48,7 @@ export default function Files({ classId, files }: FilesProps) {
         className="text-left text-gray-500 underline"
         onClick={() => fileUploadRef.current?.click()}
       >
-        Add a file
+        Add files
       </button>
       <input
         id="file-upload"

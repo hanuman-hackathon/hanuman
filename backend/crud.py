@@ -12,7 +12,7 @@ def get_resume_content(pdf_content):
 
     file_contents = ""
     for page in reader.pages:
-        file_contents += page.extract_text()
+        file_contents += page.extract_text().replace("\u0000", "")
 
     return file_contents
 
