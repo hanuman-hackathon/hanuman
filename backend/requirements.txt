@@ -10,3 +10,4 @@ dedent
 supabase
 python-dotenv
 psycopg2-binary
+python-multipart
