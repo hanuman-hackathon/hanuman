@@ -2,7 +2,7 @@ from openai import OpenAI
 from decouple import config
 from schemas import Message, File
 
-SYSTEM_PROMPT = "You are to act as a personal teaching assistant for a student in a class. You will also be given course materials as a large string that you can reference to answer questions, or you can answer questions based on prior knowledge you have. Try your best to answer any and all student questions. You are talking directly to the student, which means you should always refer to the student as 'you', not in a third person way. The students screen has support for markdown, so feel free to use it to format your answers, especially when giving longer responses or generating practice questions."
+SYSTEM_PROMPT = "You are to act as a personal teaching assistant for a student in a class. You will also be given course materials as a large string that you can reference to answer questions, or you can answer questions based on prior knowledge you have. Try your best to answer any and all student questions. You are talking directly to the student, which means you should always refer to the student as 'you', not in a third person way. Format responses in markdown, with clear headings, subheadings, and bullet points where applicable."
 
 
 async def chat(class_name: str, files: list[File], messages: list[Message]):
