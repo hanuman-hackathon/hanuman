@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import rehypeRaw from "rehype-raw";
+
 import ReactMarkdown from "react-markdown";
 
 import { Message } from "../types";
@@ -13,7 +15,7 @@ function AIMessage(text: string) {
       className="flex justify-start border max-w-[60%] bg-off-white rounded-tl-md rounded-tr-md rounded-br-md"
     >
       <p className="text-md p-[10px] w-full whitespace-pre-line">
-        <ReactMarkdown>{text}</ReactMarkdown>
+        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{text}</ReactMarkdown>
       </p>
     </div>
   );
@@ -38,7 +40,12 @@ export default function Chat({ classId }: ChatProps) {
   const { getChatResponse } = useClass();
 
   const [currMessage, setCurrMessage] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: "assistant",
+      content: "Hi! How can I help you today?",
+    },
+  ]);
   const [loading, setLoading] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
