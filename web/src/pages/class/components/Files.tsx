@@ -45,7 +45,7 @@ export default function Files({ classId, files }: FilesProps) {
         ))}
       </div>
       <button
-        className="text-left text-gray-500 "
+        className="text-left text-gray-500 underline"
         onClick={() => fileUploadRef.current?.click()}
       >
         Add a file
