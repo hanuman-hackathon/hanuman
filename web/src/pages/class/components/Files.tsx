@@ -1,8 +1,19 @@
+import useClass from "../hooks/useClass";
+
 interface FilesProps {
   files: string[];
 }
 
 export default function Files({ files }: FilesProps) {
+  const { uploadFiles } = useClass();
+
+  async function submitFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    console.log("uploading files");
+    console.log(event.target.files);
+
+    void uploadFiles("12345678", event.target.files!);
+  }
+
   return (
     <div className="min-w-[300px] flex flex-col gap-5">
       <span className="text-lg text-off-black">Uploaded Files</span>
@@ -13,7 +24,14 @@ export default function Files({ files }: FilesProps) {
           </div>
         ))}
       </div>
-      <input className="" type="file" />
+      <input
+        id="file-upload"
+        type="file"
+        accept="application/pdf"
+        multiple
+        className=""
+        onChange={submitFileUpload}
+      />
     </div>
   );
 }

@@ -2,7 +2,9 @@ import os
 import sys
 import traceback
 import uvicorn
-from fastapi import FastAPI
+from typing import List
+
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 
 from crud import get_classes, create_class, create_files
@@ -12,7 +14,6 @@ from schemas import (
     CreateClassPayload,
     CreateClassResponse,
     GetClassesResponse,
-    UploadFilesPayload,
     UploadFilesResponse,
     ChatPayload,
     ChatResponse,
@@ -27,7 +28,7 @@ app = FastAPI(title="Hanuman", docs_url="/")
 
 # CORS setting
 origins = [
-    "http://localhost:3000",  # React app
+    "http://localhost:5173",  # React app
     "http://localhost:8000",  # FastAPI server
 ]
 
@@ -53,9 +54,12 @@ async def get_classes_handler():
 
 
 @app.post("/upload_files", response_model=UploadFilesResponse)
-async def upload_files_handler(payload: UploadFilesPayload):
+async def upload_files_handler(
+    class_id: int = Form(...),
+    files: List[UploadFile] = File(...),
+):
     try:
-        await create_files(payload.class_id, payload.files)
+        await create_files(class_id, files)
 
         return {}
 
@@ -89,6 +93,7 @@ async def create_class_handler(payload: CreateClassPayload):
 
 
 if __name__ == "__main__":
+    print("running")
     uvicorn.run(
         "app:app",
         host=os.getenv("HOST", "127.0.0.1"),

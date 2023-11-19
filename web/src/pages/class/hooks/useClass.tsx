@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+
 import { Class } from "../types";
 
 const mockClasses: Class[] = [
@@ -19,6 +21,8 @@ const mockClasses: Class[] = [
     ],
   },
 ];
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL ?? "http://localhost:8000";
 
 export default function useClass() {
   const [classes, setClasses] = useState<Class[]>([]);
@@ -44,5 +48,29 @@ export default function useClass() {
     return undefined;
   }
 
-  return { getClasses, getClass };
+  async function uploadFiles(classId: string, files: FileList) {
+    console.log("uploading files");
+    console.log(files);
+
+    try {
+      const formData = new FormData();
+      formData.append("class_id", 2);
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
+
+      await axios.post(SERVER_URL + "/upload_files", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("uploaded files");
+    } catch (e) {
+      console.log("error uploading");
+      console.log(e);
+    }
+  }
+
+  return { getClasses, getClass, uploadFiles };
 }

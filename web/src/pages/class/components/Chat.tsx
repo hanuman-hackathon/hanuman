@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Message } from "../types";
+import SendMessageIcon from "../assets/SendMessageIcon";
 
 function AIMessage(text: string) {
   return (
@@ -164,11 +165,11 @@ export default function Chat() {
           </div>
         )}
       </div>
-      <div className="px-5 min-h-10">
-        <div className="w-full h-10">
+      <div className="gap-5 px-5 min-h-10">
+        <div className="flex justify-between h-10">
           <input
-            className="w-full h-full border rounded-md"
-            placeholder="Say something to your persona..."
+            className="w-[95%] h-full border rounded-md"
+            placeholder="Send a message"
             value={currMessage}
             onChange={(e) => setCurrMessage(e.target.value)}
           />
@@ -178,7 +179,7 @@ export default function Chat() {
               sendMessage();
             }}
           >
-            Send
+            <SendMessageIcon />
           </button>
         </div>
       </div>
