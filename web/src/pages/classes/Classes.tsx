@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import useClass from "../class/hooks/useClass";
 import ClassCard from "./components/ClassCard";
-import { Class } from "../class/types";
 import PlusIcon from "./assets/PlusIcon";
 import { useNavigate } from "react-router-dom";
 
