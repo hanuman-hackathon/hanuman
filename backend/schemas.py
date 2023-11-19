@@ -15,7 +15,7 @@ class Class(BaseModel):
     created_at: datetime.datetime
     name: str
     description: Optional[str]
-    files: list[object] = []
+    files: list[File] = []
 
 
 class GetClassesResponse(BaseModel):
