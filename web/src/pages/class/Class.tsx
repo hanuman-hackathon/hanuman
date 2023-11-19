@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Class } from "./types";
 import useClass from "./hooks/useClass";
@@ -36,7 +37,9 @@ export default function ClassPage() {
 
   return (
     <div className="flex flex-col max-h-screen min-h-screen bg-off-white px-page-x py-page-y">
-      <h1 className="mb-10 text-2xl font-bold">{currentClass.name}</h1>
+      <Link to={`/classes`}>
+        <h1 className="mb-10 text-2xl font-bold">{currentClass.name}</h1>
+      </Link>
       <div className="flex flex-1 min-h-full max-h-full gap-[100px]">
         <Files classId={currentClass.class_id} files={currentClass.files} />
         <Chat classId={currentClass.class_id} />
