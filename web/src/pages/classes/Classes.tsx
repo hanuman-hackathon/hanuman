@@ -38,7 +38,7 @@ export default function ClassesPage() {
             setOpen(true);
           }}
         >
-          <span className="text-[20px] font-bold">Add Class</span>
+          <span className="text-[20px] font-bold ">Add Class</span>
           <PlusIcon />
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import ReactMarkdown from "react-markdown";
+
 import { Message } from "../types";
 import SendMessageIcon from "../assets/SendMessageIcon";
 import useClass from "../hooks/useClass";
@@ -10,7 +12,9 @@ function AIMessage(text: string) {
       key={text}
       className="flex justify-start border max-w-[60%] bg-off-white rounded-tl-md rounded-tr-md rounded-br-md"
     >
-      <p className="text-md p-[10px] w-full">{text}</p>
+      <p className="text-md p-[10px] w-full whitespace-pre-line">
+        <ReactMarkdown>{text}</ReactMarkdown>
+      </p>
     </div>
   );
 }
@@ -19,9 +23,9 @@ function HumanMessage(text: string) {
   return (
     <div
       key={text}
-      className="flex ml-auto justify-end min-w-[20%] max-w-[60%] bg-logo-blue text-white rounded-tl-md rounded-tr-md rounded-bl-md"
+      className="flex ml-auto justify-end max-w-[60%] bg-logo-blue text-white rounded-tl-md rounded-tr-md rounded-bl-md"
     >
-      <p className="text-md p-[10px] w-full">{text}</p>
+      <p className="text-md p-[10px] w-full whitespace-pre-line">{text}</p>
     </div>
   );
 }
@@ -90,6 +94,12 @@ export default function Chat({ classId }: ChatProps) {
             placeholder="Send a message"
             value={currMessage}
             onChange={(e) => setCurrMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
           />
           <button
             className="send-button"

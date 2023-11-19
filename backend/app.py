@@ -98,7 +98,7 @@ if __name__ == "__main__":
     print("running")
     uvicorn.run(
         "app:app",
-        host=os.getenv("HOST", "127.0.0.1"),
+        host=os.getenv("HOST", "0.0.0.0"),
         port=8000,
         reload=True,
     )
