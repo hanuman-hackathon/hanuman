@@ -12,12 +12,13 @@ export default function useClass() {
     getClasses().then((classes) => setClasses(classes));
   }, []);
 
-  async function addClass(name: string): Promise<ClassResponse> {
+  async function addClass(name: string, desc: string): Promise<ClassResponse> {
     try {
       const response = await axios.post<ClassResponse>(
         SERVER_URL + "/create_class",
         {
           name: name,
+          description: desc,
         }
       );
 

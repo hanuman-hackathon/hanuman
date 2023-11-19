@@ -9,15 +9,13 @@ export default function ClassesPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [newClassName, setNewClassName] = useState("");
+  const [newClassDescription, setNewClassDescription] = useState("");
 
   const { addClass, getClassByName, classes } = useClass();
 
-  async function submitCreateClass(name: string) {
-    await addClass(name);
+  async function submitCreateClass(name: string, desc: string) {
+    await addClass(name, desc);
     setOpen(false);
-
-    // set small delay to allow state to update
-    await new Promise((resolve) => setTimeout(resolve, 100));
 
     const class_ = await getClassByName(name);
 
@@ -34,7 +32,7 @@ export default function ClassesPage() {
         </div>
         <span className="font-bold text-[40px] text-[#143636]">hanuman</span>
       </div>
-      <div className="pl-8 flex justify-center">
+      <div className="flex justify-center pl-8">
         <span className="text-[16px] text-[#143636]">
           Your personalized teaching assistant
         </span>
@@ -65,6 +63,13 @@ export default function ClassesPage() {
               onChange={(e) => setNewClassName(e.target.value)}
               className="w-full h-[50px] bg-gray-100 rounded-md px-4"
             />
+            <input
+              type="text"
+              placeholder="Description"
+              value={newClassDescription}
+              onChange={(e) => setNewClassDescription(e.target.value)}
+              className="w-full h-[50px] bg-gray-100 rounded-md px-4"
+            />
             <div className="flex gap-4">
               <button
                 className="w-full h-[50px] bg-gray-100 rounded-md flex justify-center items-center"
@@ -74,7 +79,9 @@ export default function ClassesPage() {
               </button>
               <button
                 className="w-full h-[50px] bg-blue-500 rounded-md text-white flex justify-center items-center"
-                onClick={() => submitCreateClass(newClassName)}
+                onClick={() =>
+                  submitCreateClass(newClassName, newClassDescription)
+                }
               >
                 Add Class
               </button>

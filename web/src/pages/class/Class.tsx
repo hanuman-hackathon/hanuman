@@ -24,7 +24,7 @@ export default function ClassPage() {
       }
 
       const class_ = await getClass(parseInt(classId));
-      console.log(class_);
+
       setCurrentClass(class_);
     }
 
