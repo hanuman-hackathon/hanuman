@@ -3,6 +3,7 @@ import useClass from "../class/hooks/useClass";
 import ClassCard from "./components/ClassCard";
 import PlusIcon from "./assets/PlusIcon";
 import { useNavigate } from "react-router-dom";
+import logo from "./assets/logo.png";
 
 export default function ClassesPage() {
   const navigate = useNavigate();
@@ -27,6 +28,17 @@ export default function ClassesPage() {
 
   return (
     <div className="relative min-h-screen bg-off-white px-page-x py-page-y">
+      <div className="flex flex-row justify-center items-center mb-[-20px]">
+        <div className="w-[100px] h-[100px] ">
+          <img src={logo} />
+        </div>
+        <span className="font-bold text-[40px] text-[#143636]">hanuman</span>
+      </div>
+      <div className="pl-8 flex justify-center">
+        <span className="text-[16px] text-[#143636]">
+          Your personalized teaching assistant
+        </span>
+      </div>
       <h1 className="mb-10 text-2xl font-bold">Classes</h1>
       <div className="flex flex-wrap gap-5">
         {classes.map((class_) => (
