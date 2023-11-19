@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import useClass from "../class/hooks/useClass";
 import ClassCard from "./components/ClassCard";
 import { Class } from "../class/types";
+import PlusIcon from "./assets/PlusIcon";
+
+type ClassCardProps = Class;
 
 export default function ClassesPage() {
   const { getClasses } = useClass();
@@ -24,6 +27,13 @@ export default function ClassesPage() {
         {classes.map((class_) => (
           <ClassCard key={class_.class_id} {...class_} />
         ))}
+        <div
+          className="w-[380px] h-[200px] bg-white rounded-xl shadow-standard px-8 py-6 flex justify-center items-center gap-4 flex-col"
+          onClick={() => {}}
+        >
+          <span className="text-[20px] font-bold">Add Class</span>
+          <PlusIcon />
+        </div>
       </div>
     </div>
   );

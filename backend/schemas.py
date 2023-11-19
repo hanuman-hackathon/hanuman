@@ -6,7 +6,7 @@ import datetime
 
 class File(BaseModel):
     file_id: int
-    blob: Optional[str] = ""
+    blob: str
     name: str
 
 
